@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,18 +45,17 @@ public class CustomerRestController {
         return customer;
     }
     @PostMapping(value="/customer/add",consumes = "application/json")
-    public Customer addCustomer(@RequestBody String theCustomer){
-        System.out.println(""+theCustomer);
-        Customer c=new Customer();
-        ObjectMapper m = new ObjectMapper();
-        
-        try {
-            c=m.readValue(theCustomer, Customer.class);
-            c.setId(23);
-        } catch (IOException ex) {
-            Logger.getLogger(CustomerRestController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        customerService.save(c);
-        return c;
+    public Customer addCustomer(@RequestBody Customer theCustomer){
+        System.out.println(theCustomer);
+        theCustomer.setId(0);
+        customerService.save(theCustomer);
+        return theCustomer;
+    }
+    @PutMapping("/customer/update")
+    public Customer updateCustomer(@RequestBody Customer theCustomer){
+      
+        customerService.save(theCustomer);
+       
+       return theCustomer;
     }
 }
